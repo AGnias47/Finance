@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from yahoo_finance import Share
+import pandas
 
 def daily_statistics(ETF) :
 	print("Daily Statistics")
@@ -15,6 +16,11 @@ def aggregate_statistics(ETF) :
 def yearly_statistics(ETF) :
 	"""Use this to analyze yearly statistics; APY, etc."""
 	pass
+
+def weekly_statistics(ETF) :
+	start = datetime.timedelta(weeks=1)
+	end = datetime.date.today()
+	print(start, end)
 
 def main() :
 	SP500_ETF = Share('VOO')
@@ -38,4 +44,4 @@ def main() :
 		print("")
 		i += 1
 
-main()
+weekly_statistics("fake")
