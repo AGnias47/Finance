@@ -12,20 +12,64 @@
 from yahoo_finance import Share
 import urllib.request
 from bs4 import BeautifulSoup
+from pprint import pprint
+import json
 
 def daily_statistics(ETF) :
-	print("Daily Statistics")
+	#print("Daily Statistics")
 	print("Current Price: ", ETF.get_price())
 	print("Change: ", ETF.get_percent_change())
 
 def aggregate_statistics(ETF) :
-	print("Aggregate Statistics")
+	#print("Aggregate Statistics")
 	print("Year High: ", ETF.get_year_high())
 	print("50 Day Average: ", ETF.get_50day_moving_avg())
 
 def yearly_statistics(ETF) :
 	"""Use this to analyze yearly statistics; APY, etc."""
 	pass
+
+
+def initialize_historical_data(f_out, StockTicker_list, days) :
+	for stock in StockTicker_list :
+		json = get_historical_data(stock, days)
+		for j in json : 
+			print(j)
+		#data = json.load(json[0])
+		#pprint(json)
+
+
+
+def load_historical_data(f_in) :
+	d = dict()
+	f = open(f_in, "r")
+	el = f.readlines()
+	for line in el :
+		line = line.strip()
+		prices = line.split(" ")
+		name = prices.pop(0)
+		prices = [float(i) for i in prices]	
+		d[name] = prices
+	return d
+
+def update_historical_data(ETF_list) :
+	for ETF in ETF_list :
+		name = ETF.get_name()
+		name = name.replace(" ","_")
+		prices = d[name]
+		newest_price = ETF.get_prev_close()
+		newest_price = float(newest_price)
+		prev_new = prices[-1]
+		if newest_price != prev_new :
+			prices.pop(0)
+			prices.append(newest_price)
+			print(prices)
+		
+
+def hist(ETF) :
+	pass
+	#get_prev_close()
+
 
 def weekly_statistics(ETF) :
 	start = datetime.timedelta(weeks=1)
@@ -71,5 +115,14 @@ def main() :
 		print("")
 		i += 1
 
-t = get_historical_data('amzn', 15)
-print(t)
+#main()
+#SP500_ETF = Share('VOO')
+#etfs = [SP500_ETF]
+#d = dict()
+#d = load_historical_data("hist.txt")
+#update_historical_data(etfs)
+#print(d["Vanguard_S&P_500_ETF"])
+#t = get_historical_data('AMZN', 15)
+#print(t)
+
+initialize_historical_data("hist.txt", ['VOO'], 3) 
