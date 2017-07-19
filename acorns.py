@@ -14,13 +14,16 @@ import urllib.request
 from bs4 import BeautifulSoup
 from pprint import pprint
 import json
+import time
 
 def daily_statistics(ETF) :
+	"""Gets information of the day to day performance of a stock"""
 	#print("Daily Statistics")
 	print("Current Price: ", ETF.get_price())
 	print("Change: ", ETF.get_percent_change())
 
 def aggregate_statistics(ETF) :
+	"""Gets aggregate information of a stock"""
 	#print("Aggregate Statistics")
 	print("Year High: ", ETF.get_year_high())
 	print("50 Day Average: ", ETF.get_50day_moving_avg())
@@ -31,55 +34,23 @@ def yearly_statistics(ETF) :
 
 
 def initialize_historical_data(f_out, StockTicker_list, days) :
-	for stock in StockTicker_list :
-		json = get_historical_data(stock, days)
-		for j in json : 
-			print(j)
-		#data = json.load(json[0])
-		#pprint(json)
-
-
-
-def load_historical_data(f_in) :
+	"""Used to gather historical data for specified stocks that can be plotted"""
+	#Since this is for daily open price, just run this once a day on the website
 	d = dict()
-	f = open(f_in, "r")
-	el = f.readlines()
-	for line in el :
-		line = line.strip()
-		prices = line.split(" ")
-		name = prices.pop(0)
-		prices = [float(i) for i in prices]	
-		d[name] = prices
+	for stock in StockTicker_list :
+		hist = get_historical_data(stock, days)
+		prices = []
+		for day in hist :
+			#print(day["Date"].replace(" ","_").replace(",",""), end=":")
+			#print(day["Open"], end=" ")
+			prices.append(day["Open"])
+		full_name = Share(stock).get_name().replace(" ","_")
+		d[full_name] = prices
 	return d
-
-def update_historical_data(ETF_list) :
-	for ETF in ETF_list :
-		name = ETF.get_name()
-		name = name.replace(" ","_")
-		prices = d[name]
-		newest_price = ETF.get_prev_close()
-		newest_price = float(newest_price)
-		prev_new = prices[-1]
-		if newest_price != prev_new :
-			prices.pop(0)
-			prices.append(newest_price)
-			print(prices)
-		
-
-def hist(ETF) :
-	pass
-	#get_prev_close()
-
-
-def weekly_statistics(ETF) :
-	start = datetime.timedelta(weeks=1)
-	end = datetime.date.today()
-	print(start, end)
 
 
 def get_historical_data(name, number_of_days):
 	#Source: https://github.com/lukaszbanasiak/yahoo-finance/issues/128
-	#Note: Incredibly time consuming - 30 seconds for 15 days
 	data = []
 	url = "https://finance.yahoo.com/quote/" + name + "/history/"
 	rows = BeautifulSoup(urllib.request.urlopen(url).read(),"html5lib").findAll('table')[1].tbody.findAll('tr')
@@ -115,14 +86,7 @@ def main() :
 		print("")
 		i += 1
 
-#main()
-#SP500_ETF = Share('VOO')
-#etfs = [SP500_ETF]
-#d = dict()
-#d = load_historical_data("hist.txt")
-#update_historical_data(etfs)
-#print(d["Vanguard_S&P_500_ETF"])
-#t = get_historical_data('AMZN', 15)
-#print(t)
 
-initialize_historical_data("hist.txt", ['VOO'], 3) 
+main()
+d = initialize_historical_data("hist.txt", ['VOO', 'VB', 'VEA', 'VWO', 'VNQ', 'LQD', 'SHY', 'LMT'], 15)
+print(d["Vanguard_S&P_500_ETF"])
