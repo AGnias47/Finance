@@ -61,7 +61,7 @@ def get_historical_data(name, number_of_days):
 	#Source: https://github.com/lukaszbanasiak/yahoo-finance/issues/128
 	data = []
 	url = "https://finance.yahoo.com/quote/" + name + "/history/"
-	rows = BeautifulSoup(urllib.request.urlopen(url).read(),"html5lib").findAll('table')[1].tbody.findAll('tr')
+	rows = BeautifulSoup(urllib.request.urlopen(url).read(),"lxml").findAll('table')[1].tbody.findAll('tr')
 
 	for each_row in rows:
 		divs = each_row.findAll('td')
