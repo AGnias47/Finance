@@ -87,6 +87,35 @@ def plot_historical_data(DATES_list, PRICES_list, NAME) :
 	Plot.title(NAME)
 	Plot.ylabel("USD")
 	Plot.show()
+	
+	
+def initialize_website_head(fname) :
+	title = "Acorns Performance Analysis"
+	description = "Analyzes stockes used in Acorns investing portfolios."
+	author = "A. Gnias"
+	with open(fname, 'w') as f :
+		f.write("<!doctype html>\n<html lang=\"en\">\n<head>\n\t<meta charset=\"utf-8\">")
+		f.write("\n\t<title>%s</title>\n\t<meta name=\"description\"" % title)
+		f.write("content=\"%s\">" % description)
+		f.write("\n\t<meta name=\"author\" content=\"%s\">\n</head>\n" % author)
+
+
+def add_website_data(fname) :
+	SP500_ETF = Share('VOO')
+	ETFs = [SP500_ETF]
+	AcornsAllocation_ModAgg = [0.2]
+	
+	f = open(fname, "a")
+	f.write("<body>\n")
+	i = 0
+	for etf in ETFs :
+		name = etf.get_name()
+		allocation_string = str(AcornsAllocation_ModAgg[i] * 100) + "%"
+		f.write("\t<h3 class=\"ETF Headers\">%s</h3>\n" % name)
+		f.write("\t\t<p>Acorns Allocation: %s</p>\n" % allocation_string)
+		i += 1
+	f.write("</body>\n</html>")
+	f.close()
 
 
 def main() :
@@ -107,7 +136,7 @@ def main() :
 	for etf in ETFs :
 		#Get numerical statistics
 		print("---", etf.get_name(), "---")
-		print("Acorns Allocation: ", AcornsAllocation_ModAgg[i])
+		
 		daily_statistics(etf)
 		aggregate_statistics(etf)
 		print("")
@@ -136,5 +165,8 @@ def main() :
 	#					 "Lockheed Martin Corporation")
 
 
-main()
+#main()
+fname = "C:/Users/Andy/Desktop/Finance/index.html"
+initialize_website_head(fname)
+add_website_data(fname)
 
