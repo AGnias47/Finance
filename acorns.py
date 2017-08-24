@@ -20,7 +20,6 @@ import numpy
 
 def daily_statistics(ETF) :
 	"""Gets information of the day to day performance of a stock"""
-	#print("Daily Statistics")
 	print("Current Price: ", ETF.get_price())
 	print("Change: ", ETF.get_percent_change())
 
@@ -102,17 +101,31 @@ def initialize_website_head(fname) :
 
 def add_website_data(fname) :
 	SP500_ETF = Share('VOO')
-	ETFs = [SP500_ETF]
-	AcornsAllocation_ModAgg = [0.2]
+	SmallCap_ETF = Share('VB')
+	International_ETF = Share('VEA')
+	EmergingMarkets_ETF = Share('VWO')
+	RealEstate_ETF = Share('VNQ')
+	Corporate_BOND = Share('LQD')
+	Government_BOND = Share('SHY')
+	LockheedMartin_STOCK = Share('LMT')
+	ETFs = [SP500_ETF, SmallCap_ETF, International_ETF, EmergingMarkets_ETF, 
+				RealEstate_ETF, Corporate_BOND, Government_BOND, LockheedMartin_STOCK]
+	AcornsAllocation_ModAgg = [0.2, 0.3, 0.15, 0.1, 0.1, 0.07, 0.08, 0.00]
 	
 	f = open(fname, "a")
 	f.write("<body>\n")
 	i = 0
+	f.write("<h2 class=\"Profile Type Headers\">Moderately Aggresive Portfolio</h2>\n")
 	for etf in ETFs :
 		name = etf.get_name()
 		allocation_string = str(AcornsAllocation_ModAgg[i] * 100) + "%"
 		f.write("\t<h3 class=\"ETF Headers\">%s</h3>\n" % name)
 		f.write("\t\t<p>Acorns Allocation: %s</p>\n" % allocation_string)
+		f.write("\t\t<p>Current Price: %s</p>\n" % etf.get_price())
+		f.write("\t\t<p>Change: %s</p>\n" % etf.get_percent_change())
+		f.write("\t\t<p>Year High: %s</p>\n" % etf.get_year_high())
+		f.write("\t\t<p>Year Low: %s</p>\n" % etf.get_year_low())
+		f.write("\t\t<p>50 Day Average: %s</p>\n" % etf.get_50day_moving_avg())
 		i += 1
 	f.write("</body>\n</html>")
 	f.close()
@@ -137,10 +150,7 @@ def main() :
 		#Get numerical statistics
 		print("---", etf.get_name(), "---")
 		
-		daily_statistics(etf)
-		aggregate_statistics(etf)
-		print("")
-		i += 1
+		
 
 	#Get historical plots
 	(d_prices, d_dates) = initialize_historical_data("hist.txt",
