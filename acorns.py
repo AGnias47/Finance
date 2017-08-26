@@ -79,9 +79,9 @@ def initialize_website_head(fname) :
 		f.write("<!doctype html>\n<html lang=\"en\">\n<head>\n\t<meta charset=\"utf-8\">")
 		f.write("\n\t<title>%s</title>\n\t<meta name=\"description\"" % title)
 		f.write("content=\"%s\">" % description)
+		f.write("\n\tlink rel = \"stylesheet\" type = \"text/css\" href = \"style.css\" />")
 		f.write("\n\t<meta name=\"author\" content=\"%s\">\n</head>\n" % author)
-
-
+		
 def add_website_data(fname, ETFs, AcornsAllocation) :
 	f = open(fname, "a")
 	f.write("<body>\n")
