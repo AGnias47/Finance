@@ -18,23 +18,6 @@ import time
 import matplotlib.pyplot as Plot
 import numpy
 
-def daily_statistics(ETF) :
-	"""Gets information of the day to day performance of a stock"""
-	print("Current Price: ", ETF.get_price())
-	print("Change: ", ETF.get_percent_change())
-
-
-def aggregate_statistics(ETF) :
-	"""Gets aggregate information of a stock"""
-	#print("Aggregate Statistics")
-	print("Year High: ", ETF.get_year_high())
-	print("50 Day Average: ", ETF.get_50day_moving_avg())
-
-
-def yearly_statistics(ETF) :
-	"""Use this to analyze yearly statistics; APY, etc."""
-	pass
-
 
 def initialize_historical_data(f_out, StockTicker_list, days) :
 	"""Used to gather historical data for specified stocks that can be plotted"""
@@ -99,26 +82,14 @@ def initialize_website_head(fname) :
 		f.write("\n\t<meta name=\"author\" content=\"%s\">\n</head>\n" % author)
 
 
-def add_website_data(fname) :
-	SP500_ETF = Share('VOO')
-	SmallCap_ETF = Share('VB')
-	International_ETF = Share('VEA')
-	EmergingMarkets_ETF = Share('VWO')
-	RealEstate_ETF = Share('VNQ')
-	Corporate_BOND = Share('LQD')
-	Government_BOND = Share('SHY')
-	LockheedMartin_STOCK = Share('LMT')
-	ETFs = [SP500_ETF, SmallCap_ETF, International_ETF, EmergingMarkets_ETF, 
-				RealEstate_ETF, Corporate_BOND, Government_BOND, LockheedMartin_STOCK]
-	AcornsAllocation_ModAgg = [0.2, 0.3, 0.15, 0.1, 0.1, 0.07, 0.08, 0.00]
-	
+def add_website_data(fname, ETFs, AcornsAllocation) :
 	f = open(fname, "a")
 	f.write("<body>\n")
 	i = 0
 	f.write("<h2 class=\"Profile Type Headers\">Moderately Aggresive Portfolio</h2>\n")
 	for etf in ETFs :
 		name = etf.get_name()
-		allocation_string = str(AcornsAllocation_ModAgg[i] * 100) + "%"
+		allocation_string = str(AcornsAllocation[i] * 100) + "%"
 		f.write("\t<h3 class=\"ETF Headers\">%s</h3>\n" % name)
 		f.write("\t\t<p>Acorns Allocation: %s</p>\n" % allocation_string)
 		f.write("\t\t<p>Current Price: %s</p>\n" % etf.get_price())
@@ -145,20 +116,19 @@ def main() :
 				RealEstate_ETF, Corporate_BOND, Government_BOND, LockheedMartin_STOCK]
 	AcornsAllocation_ModAgg = ["20%", "30%", "15%", "10%", "10%", "7%", "8%", "0%"]
 
-	i = 0
-	for etf in ETFs :
-		#Get numerical statistics
-		print("---", etf.get_name(), "---")
+	fname = "C:/Users/Andy/Desktop/Finance/index.html"
+	initialize_website_head(fname)
+	add_website_data(fname, ETFs, AcornsAllocation_ModAgg)
 		
 		
 
 	#Get historical plots
-	(d_prices, d_dates) = initialize_historical_data("hist.txt",
-												 ['VOO', 'VB', 'VWO', 'VNQ', 'LQD', 'SHY', 'LMT', 'VEA'], 30)
-	plot_historical_data(d_dates["Vanguard_S&P_500_ETF"], d_prices["Vanguard_S&P_500_ETF"],
-						 "Vanguard S&P 500 ETF")
-	plot_historical_data(d_dates["Vanguard_Small-Cap_ETF_-_DNQ"], d_prices["Vanguard_Small-Cap_ETF_-_DNQ"],
-						 "Vanguard Small-Cap ETF - DNQ")
+	#(d_prices, d_dates) = initialize_historical_data("hist.txt",
+	#											 ['VOO', 'VB', 'VWO', 'VNQ', 'LQD', 'SHY', 'LMT', 'VEA'], 30)
+	#plot_historical_data(d_dates["Vanguard_S&P_500_ETF"], d_prices["Vanguard_S&P_500_ETF"],
+	#					 "Vanguard S&P 500 ETF")
+	#plot_historical_data(d_dates["Vanguard_Small-Cap_ETF_-_DNQ"], d_prices["Vanguard_Small-Cap_ETF_-_DNQ"],
+	#					 "Vanguard Small-Cap ETF - DNQ")
 	#plot_historical_data(d_dates["Vanguard_FTSE_Developed_Markets"], d_prices["Vanguard_FTSE_Developed_Markets"],
 	#					 "Vanguard FTSE Developed Markets")
 	#plot_historical_data(d_dates["Vanguard_FTSE_Emerging_Markets"], d_prices["Vanguard_FTSE_Emerging_Markets"],
@@ -175,8 +145,6 @@ def main() :
 	#					 "Lockheed Martin Corporation")
 
 
-#main()
-fname = "C:/Users/Andy/Desktop/Finance/index.html"
-initialize_website_head(fname)
-add_website_data(fname)
+main()
+
 
