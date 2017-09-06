@@ -79,28 +79,44 @@ def initialize_website_head(fname) :
 		f.write("<!doctype html>\n<html lang=\"en\">\n<head>\n\t<meta charset=\"utf-8\">")
 		f.write("\n\t<title>%s</title>\n\t<meta name=\"description\"" % title)
 		f.write("content=\"%s\">" % description)
-		f.write("\n\tlink rel = \"stylesheet\" type = \"text/css\" href = \"style.css\" />")
+		f.write("\n\t<link rel = \"stylesheet\" type = \"text/css\" href = \"style.css\" />")
 		f.write("\n\t<meta name=\"author\" content=\"%s\">\n</head>\n" % author)
 		
 def add_website_data(fname, ETFs, AcornsAllocation) :
 	f = open(fname, "a")
 	f.write("<body>\n")
 	i = 0
-	f.write("<h2 class=\"Profile Type Headers\">Moderately Aggresive Portfolio</h2>\n")
+	f.write("<h2 class=\"Profile_Type_Headers\">Moderately Aggresive Portfolio</h2>\n")
 	for etf in ETFs :
 		name = etf.get_name()
 		allocation_string = str(AcornsAllocation[i] * 100) + "%"
-		f.write("\t<h3 class=\"ETF Headers\">%s</h3>\n" % name)
-		f.write("\t\t<p>Acorns Allocation: %s</p>\n" % allocation_string)
-		f.write("\t\t<p>Current Price: %s</p>\n" % etf.get_price())
-		f.write("\t\t<p>Change: %s</p>\n" % etf.get_percent_change())
-		f.write("\t\t<p>Year High: %s</p>\n" % etf.get_year_high())
-		f.write("\t\t<p>Year Low: %s</p>\n" % etf.get_year_low())
-		f.write("\t\t<p>50 Day Average: %s</p>\n" % etf.get_50day_moving_avg())
+		f.write("\t<h3 class=\"ETF_Headers\">%s</h3>\n" % name)
+		f.write("\t<table class=\"Stock_Data\">\n")
+		f.write("\t\t<tr>\n")
+		f.write("\t\t\t<td>Acorns Allocation</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % allocation_string)
+		f.write("\t\t</tr>\n")
+		f.write("\t\t<tr>\n")
+		f.write("\t\t\t<td>Current Price</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % etf.get_price())
+		f.write("\t\t</tr>\n")
+		f.write("\t\t<tr>\n")
+		f.write("\t\t\t<td>Change (1D)</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % etf.get_percent_change())
+		f.write("\t\t</tr>\n")
+		f.write("\t\t<tr>\n")
+		f.write("\t\t\t<td>Year High</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % etf.get_year_high())
+		f.write("\t\t</tr>\n")
+		f.write("\t\t\t<td>Year Low</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % etf.get_year_low())
+		f.write("\t\t</tr>\n")
+		f.write("\t\t\t<td>50 Day Average</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % etf.get_50day_moving_avg())
+		f.write("\t\t</tr>\n")
+		f.write("\t</table>\n")
 		i += 1
 	f.write("</body>\n</html>")
-	f.close()
-
 
 def main() :
 	#initialize shares
@@ -114,7 +130,7 @@ def main() :
 	LockheedMartin_STOCK = Share('LMT')
 	ETFs = [SP500_ETF, SmallCap_ETF, International_ETF, EmergingMarkets_ETF, 
 				RealEstate_ETF, Corporate_BOND, Government_BOND, LockheedMartin_STOCK]
-	AcornsAllocation_ModAgg = ["20%", "30%", "15%", "10%", "10%", "7%", "8%", "0%"]
+	AcornsAllocation_ModAgg = [0.2, 0.3, 0.15, 0.1, 0.1, 0.07, 0.08, 0.0]
 
 	fname = "C:/Users/Andy/Desktop/Finance/index.html"
 	initialize_website_head(fname)

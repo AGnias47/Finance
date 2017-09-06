@@ -2,8 +2,8 @@
 body
 {
 	background: #74ebd5;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to bottom, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: -webkit-linear-gradient(to right, rgb(150, 182, 229) #CCE5FF);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, rgb(150, 182, 229), #CCE5FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .Profile_Type_Headers
@@ -17,7 +17,7 @@ body
 .ETF_Headers
 {
 	font-size: 30px;
-	color: #fff;
+	color: #003366;
 	text-transform: uppercase;
 	font-weight: 300;
 	text-align: left;
@@ -41,6 +41,6 @@ td{
 	vertical-align:middle;
 	font-weight: 300;
 	font-size: 18px;
-	color: #fff;
+	color: #003366;
 	border-bottom: solid 1px rgba(255,255,255,0.1);
 }
