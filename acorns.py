@@ -68,7 +68,8 @@ def plot_historical_data(DATES_list, PRICES_list, NAME) :
 	Plot.plot(x, PRICES_list)
 	Plot.title(NAME)
 	Plot.ylabel("USD")
-	Plot.show()
+	fname = NAME.replace(" ","_")
+	Plot.savefig("./Images/%s.png" % fname)
 	
 	
 def initialize_website_head(fname) :
@@ -89,7 +90,7 @@ def add_website_data(fname, ETFs, AcornsAllocation) :
 	f.write("<h2 class=\"Profile_Type_Headers\">Moderately Aggresive Portfolio</h2>\n")
 	for etf in ETFs :
 		name = etf.get_name()
-		allocation_string = str(AcornsAllocation[i] * 100) + "%"
+		allocation_string = str(int(AcornsAllocation[i] * 100)) + "%"
 		f.write("\t<h3 class=\"ETF_Headers\">%s</h3>\n" % name)
 		f.write("\t<table class=\"Stock_Data\">\n")
 		f.write("\t\t<tr>\n")
@@ -139,26 +140,26 @@ def main() :
 		
 
 	#Get historical plots
-	#(d_prices, d_dates) = initialize_historical_data("hist.txt",
-	#											 ['VOO', 'VB', 'VWO', 'VNQ', 'LQD', 'SHY', 'LMT', 'VEA'], 30)
-	#plot_historical_data(d_dates["Vanguard_S&P_500_ETF"], d_prices["Vanguard_S&P_500_ETF"],
-	#					 "Vanguard S&P 500 ETF")
+	(d_prices, d_dates) = initialize_historical_data("hist.txt",
+												 ['VOO', 'VB', 'VWO', 'VNQ', 'LQD', 'SHY', 'LMT', 'VEA'], 30)
+	plot_historical_data(d_dates["Vanguard_S&P_500_ETF"], d_prices["Vanguard_S&P_500_ETF"],
+						 "Vanguard S&P 500 ETF")
 	#plot_historical_data(d_dates["Vanguard_Small-Cap_ETF_-_DNQ"], d_prices["Vanguard_Small-Cap_ETF_-_DNQ"],
 	#					 "Vanguard Small-Cap ETF - DNQ")
-	#plot_historical_data(d_dates["Vanguard_FTSE_Developed_Markets"], d_prices["Vanguard_FTSE_Developed_Markets"],
-	#					 "Vanguard FTSE Developed Markets")
-	#plot_historical_data(d_dates["Vanguard_FTSE_Emerging_Markets"], d_prices["Vanguard_FTSE_Emerging_Markets"],
-	#					 "Vanguard FTSE Emerging Markets")
+	plot_historical_data(d_dates["Vanguard_FTSE_Developed_Markets"], d_prices["Vanguard_FTSE_Developed_Markets"],
+						 "Vanguard FTSE Developed Markets")
+	plot_historical_data(d_dates["Vanguard_FTSE_Emerging_Markets"], d_prices["Vanguard_FTSE_Emerging_Markets"],
+						 "Vanguard FTSE Emerging Markets")
 	#plot_historical_data(d_dates["Vanguard_REIT_ETF_-_DNQ"], d_prices["Vanguard_REIT_ETF_-_DNQ"],
 	#					 "Vanguard REIT ETF - DNQ")
 	#plot_historical_data(d_dates["Shares_iBoxx_$_Investment_Grad"], d_prices["Shares_iBoxx_$_Investment_Grad"],
 	#					 "Shares iBoxx $ Investment Grad")
-	#plot_historical_data(d_dates["iShares_iBoxx_$_Investment_Grad"], d_prices["iShares_iBoxx_$_Investment_Grad"],
-	#					 "iShares iBoxx $ Investment Grad")
-	#plot_historical_data(d_dates["iShares_1-3_Year_Treasury_Bond"], d_prices["iShares_1-3_Year_Treasury_Bond"],
-	#					 "iShares 1-3 Year Treasury Bond")
-	#plot_historical_data(d_dates["Lockheed_Martin_Corporation"], d_prices["Lockheed_Martin_Corporation"],
-	#					 "Lockheed Martin Corporation")
+	plot_historical_data(d_dates["iShares_iBoxx_$_Investment_Grad"], d_prices["iShares_iBoxx_$_Investment_Grad"],
+						 "iShares iBoxx $ Investment Grad")
+	plot_historical_data(d_dates["iShares_1-3_Year_Treasury_Bond"], d_prices["iShares_1-3_Year_Treasury_Bond"],
+						 "iShares 1-3 Year Treasury Bond")
+	plot_historical_data(d_dates["Lockheed_Martin_Corporation"], d_prices["Lockheed_Martin_Corporation"],
+						 "Lockheed Martin Corporation")
 
 
 main()
