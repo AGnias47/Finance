@@ -56,20 +56,38 @@ def get_historical_data(name, number_of_days):
 
 def plot_historical_data(DATES_list, PRICES_list, NAME) :
 	Plot.style.use('bmh')
+	vfont = {'fontname':'Verdana'}
 	x_init = list(range(0, len(DATES_list)))
 	i = 0
 	while i < len(DATES_list) :
-		if i % 3 != 0 :
+		if i % 4 != 0 :
 			DATES_list[i] = ""
 		i += 1
+	
 	x = numpy.array(x_init)
 	y = numpy.array(PRICES_list)
-	Plot.xticks(x, DATES_list)
-	Plot.plot(x, PRICES_list)
-	Plot.title(NAME)
-	Plot.ylabel("USD")
+	
+	Plot.xticks(x, DATES_list,**vfont,color='#003366')
+	Plot.yticks(**vfont,color='#003366')
+	ax = Plot.axes()
+	Plot.plot(x, PRICES_list, "#1f77b4")
+	
+	ax.spines['top'].set_color((0.85,0.85,0.85,0.7))
+	ax.spines['bottom'].set_color((0.85,0.85,0.85,0.7))
+	ax.spines['left'].set_color((0.85,0.85,0.85,0.7))
+	ax.spines['right'].set_color((0.85,0.85,0.85,0.7))
+	ax.xaxis.set_ticks_position('none')
+	ax.yaxis.set_ticks_position('none')
+	ax.yaxis.grid(True,color=(0.85,0.85,0.85,0.2))
+	ax.xaxis.grid(False)
+	
+	Plot.title(NAME,**vfont,color='#003366')
+	Plot.ylabel("USD",**vfont,color='#003366')
+	
 	fname = NAME.replace(" ","_")
-	Plot.savefig("./Images/%s.png" % fname)
+	Plot.savefig("./Images/%s.png" % fname, transparent=True)
+	
+	Plot.clf()
 	
 	
 def initialize_website_head(fname) :
@@ -92,6 +110,7 @@ def add_website_data(fname, ETFs, AcornsAllocation) :
 		name = etf.get_name()
 		allocation_string = str(int(AcornsAllocation[i] * 100)) + "%"
 		f.write("\t<h3 class=\"ETF_Headers\">%s</h3>\n" % name)
+		f.write("\t<img src=\"C:\\Users\\Andy\\Desktop\\Finance\\Images\\Vanguard_S&P_500_ETF.png\">\n")
 		f.write("\t<table class=\"Stock_Data\">\n")
 		f.write("\t\t<tr>\n")
 		f.write("\t\t\t<td>Acorns Allocation</td>\n")
@@ -106,14 +125,15 @@ def add_website_data(fname, ETFs, AcornsAllocation) :
 		f.write("\t\t\t<td>%s</td>\n" % etf.get_percent_change())
 		f.write("\t\t</tr>\n")
 		f.write("\t\t<tr>\n")
+		f.write("\t\t\t<td>Average (50D)</td>\n")
+		f.write("\t\t\t<td>%s</td>\n" % etf.get_50day_moving_avg())
+		f.write("\t\t</tr>\n")
+		f.write("\t\t<tr>\n")
 		f.write("\t\t\t<td>Year High</td>\n")
 		f.write("\t\t\t<td>%s</td>\n" % etf.get_year_high())
 		f.write("\t\t</tr>\n")
 		f.write("\t\t\t<td>Year Low</td>\n")
 		f.write("\t\t\t<td>%s</td>\n" % etf.get_year_low())
-		f.write("\t\t</tr>\n")
-		f.write("\t\t\t<td>50 Day Average</td>\n")
-		f.write("\t\t\t<td>%s</td>\n" % etf.get_50day_moving_avg())
 		f.write("\t\t</tr>\n")
 		f.write("\t</table>\n")
 		i += 1
